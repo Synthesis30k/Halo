@@ -1,0 +1,40 @@
+import  string
+from itertools import count
+alphabet = set(string.ascii_letters)
+input_list = ['Aire acondicionado','Bateria de carro', 'Computador de escritorio','Escritorio']
+output_list = []
+code_list =[]
+
+def first_code_generator(n,nums,contable_code):
+    for i in range(n):
+        nums.append(contable_code)
+
+def second_code_generator(n,nums,contable_code):
+    pass
+
+def validname (list, final_list):
+
+ for count in list:
+  final_word = count
+  while ' ' in final_word:
+     for letter in final_word:
+        final_word = [letter if letter in alphabet else '_' for letter in final_word]
+        final_word = ''.join(final_word)
+
+  final_word =final_word.upper()
+  final_list.append(final_word)
+
+def assign_code(name_list, values):
+    coded_list = {name_list[i]: values[i] for i in range (len(values))}
+    return coded_list
+
+validname(input_list, output_list)
+
+print(input_list)
+print(output_list)
+
+first_code_generator(len(output_list),code_list,2210)
+
+first_codification = assign_code(output_list, code_list)
+print(first_codification)
+
