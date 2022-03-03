@@ -1,0 +1,138 @@
+import string
+from itertools import count
+
+#Parameter list
+
+output_from_file = []
+output_list = []
+arti_file = [line.strip() for line in  open ('E:\Desktop\Documentos\Halo\Inputs\_Articulos.txt', "r") ]
+
+cc_list = []
+family_list = []
+index_code_list = []
+
+
+Assigned_list = {}
+
+#Func definition:
+
+class  InvalidInput (Exception) :
+    pass
+
+def test_input (x):
+    if x in range(2,5):
+        return True
+    else:
+        raise InvalidInput('Input invalido, el número de subfamilias debe estar entre 2 y 4')
+
+
+def valid_input():
+
+    alphabet = set(string.ascii_letters)
+    alphabet.add('ñ')
+    alphabet.add('Ñ')
+
+    for i in count(0):
+        alphabet.add(str(i))
+        if i == 9:
+            break
+    return alphabet
+
+alphabet = valid_input()
+
+def validname (list, final_list):
+
+ for count in list:
+  final_word = count
+  while ' ' in final_word:
+     for letter in final_word:
+        final_word = [letter if letter in alphabet else '_' for letter in final_word]
+        final_word = ''.join(final_word)
+
+  final_word = final_word.upper()
+  final_list.append(final_word)
+
+def contable_code_generator(n,nums,contable_code,index):
+      for i in range(n):
+            nums.append(contable_code+index)
+
+def family_number_generator(n,nums,fam_number):
+    for _ in range(n):
+        nums.append(fam_number)
+
+def index_generator(n,nums):
+    for i in range(n):
+            nums.append(i+1)
+
+def assign_code(name_list, values):
+    coded_list = {name_list[i]: values[i] for i in range (len(values))}
+    return coded_list
+
+def list_indexer(list1,list2):
+    list_indexed = [f'{list1[i]}.{list2[i]}' for i in range(len(list1))]
+    return list_indexed
+
+# Run
+
+print(' Indexador de listas ')
+
+contable_code= int(input('Ingrese la cuenta contable de a registrar: '))
+family_code= int(input('Ingrese el número de la familia de la cuenta: '))
+subfamily_num =int(input('Ingrese el número de subfamilias: '))
+
+try:
+    Run = test_input(int(subfamily_num))
+
+    if subfamily_num ==2 and Run:
+
+
+        validname(arti_file,output_from_file)
+        output_from_file = sorted(output_from_file)
+        contable_code_generator(len(output_from_file),cc_list,contable_code,family_code/10)
+        family_number_generator(len(output_from_file),family_list,family_code)
+        index_generator(len(output_from_file),index_code_list)
+
+
+        temp_index_list = list_indexer(cc_list,index_code_list)
+
+        temp_index_list= list_indexer(temp_index_list,[0 for i in range (len(temp_index_list))])
+        temp_index_list = list_indexer(temp_index_list, [0 for i in range(len(temp_index_list))])
+        assigned_list = assign_code(output_from_file,temp_index_list)
+
+        with open(f'E:\Desktop\Documentos\Halo\Outputs\Articulos_{contable_code}.txt', "w") as temp_file:
+            for key,value in assigned_list.items():
+                temp_file.write('%s : %s\n' % (key,value))
+
+        print(arti_file)
+        print(assigned_list)
+
+
+
+    elif subfamily_num ==3 and Run:
+
+
+        validname(arti_file, output_from_file)
+        output_from_file = sorted(output_from_file)
+        contable_code_generator(len(output_from_file), cc_list, contable_code, family_code / 10)
+        family_number_generator(len(output_from_file), family_list, family_code)
+        index_generator(len(output_from_file), index_code_list)
+
+        temp_index_list = list_indexer(cc_list,family_list)
+        temp_index_list = list_indexer(temp_index_list, index_code_list)
+        temp_index_list = list_indexer(temp_index_list, [0 for i in range(len(temp_index_list))])
+        assigned_list = assign_code(output_from_file, temp_index_list)
+
+        with open(f'E:\Desktop\Documentos\ Articulos_{contable_code}.txt', "w") as temp_file:
+            for key, value in assigned_list.items():
+                temp_file.write('%s : %s\n' % (key, value))
+
+        print(arti_file)
+        print(assigned_list)
+
+
+
+except Exception as e:
+    print(e)
+
+finally:
+    print('\nFin de la operación')
